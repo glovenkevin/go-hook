@@ -1,16 +1,34 @@
 package api
 
 import (
-	"encoding/json"
+	"log"
 	"net/http"
+	"os/exec"
 
-	"github.com/kcchandra/golang-hook/api/response"
+	"github.com/kcchandra/golang-hook/api/request"
+	httpext "github.com/kcchandra/golang-hook/pkg/http"
 )
 
 func DeployHook(w http.ResponseWriter, r *http.Request) {
-	response := response.NewBaseResponse(http.StatusOK, "OK", "success")
+	var req request.DeployHookRequest
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(response)
+	if err := httpext.ReadJSON(r, &req); err != nil {
+		httpext.Error(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// Execute git pull and pm2 reload
+	cmd := exec.Command("sh", "-c", "git pull && pm2 reload ecosystem.config.js")
+	cmd.Dir = req.RepoPath
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		httpext.Error(w, http.StatusInternalServerError, "Failed to execute deploy commands: "+err.Error())
+		return
+	}
+
+	// Log the output for debugging
+	log.Printf("Deploy output: %s", string(output))
+
+	httpext.StatusOK(w, "OK")
 }
