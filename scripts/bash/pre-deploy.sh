@@ -9,16 +9,16 @@ echo "PORT=9994" > .env
 echo "module.exports = {
 	apps : [
 	  {
-		name   : "golang-hook",
-		script : "app",
-		interpreter_args: '-u',
+		name   : \"golang-hook\",
+		script : \"app\",
+		interpreter_args: \"-u\",
 		autorestart: false,
 		instances: 1,
 		env_development: {
-		  NODE_ENV: "development",
+		  NODE_ENV: \"development\",
 		},
 		env_production: {
-		  NODE_ENV: "production",
+		  NODE_ENV: \"production\",
 		},
 	  }
 	]
