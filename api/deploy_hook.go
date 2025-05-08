@@ -30,5 +30,5 @@ func DeployHook(w http.ResponseWriter, r *http.Request) {
 	// Log the output for debugging
 	log.Printf("Deploy output: %s", string(output))
 
-	httpext.StatusOK(w, "OK")
+	httpext.StatusOK(w, "result: "+string(output))
 }
