@@ -1,0 +1,18 @@
+{
+	"apps": [
+		{
+			"name": "golang-hook",
+			"script": "main.go",
+			"env": {
+				"PORT": "8080"
+			}
+		}
+	],
+    "deploy": {
+        "production": {
+            "user": "ubuntu",
+            "host": "ec2-3-115-177-17.ap-northeast-1.compute.amazonaws.com",
+            "ref": "origin/main"
+        }
+    }
+}
