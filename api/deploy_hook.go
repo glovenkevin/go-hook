@@ -17,8 +17,7 @@ func DeployHook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Execute git pull and pm2 reload
-	cmd := exec.Command("sh", "-c", "git pull && pm2 reload ecosystem.config.js")
+	cmd := exec.Command("sh", "-c", "git pull && pm2 startOrReload ecosystem.config.js")
 	cmd.Dir = req.RepoPath
 
 	output, err := cmd.CombinedOutput()
